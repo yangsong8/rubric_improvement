@@ -1,4 +1,4 @@
-class CustomResponseScoreRecord < ActiveRecord::Base
+class OrdinaryResponseScoreRecord < ActiveRecord::Base
   validates :assignment_id, :presence => true
   validates :question_id, :presence => true
   validates :score, :presence => true
