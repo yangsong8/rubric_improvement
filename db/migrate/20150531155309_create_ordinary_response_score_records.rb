@@ -8,6 +8,7 @@ class CreateOrdinaryResponseScoreRecords < ActiveRecord::Migration
       t.integer :response_id
       t.integer :reviewer_id
       t.integer :reviewee_team_id
+      t.integer :word_count
 
       t.timestamps null: false
     end
