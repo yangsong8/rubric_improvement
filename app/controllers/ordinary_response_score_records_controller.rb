@@ -1,10 +1,10 @@
 class OrdinaryResponseScoreRecordsController < ApplicationController
   def index
     @ordinary_response_score_records = OrdinaryResponseScoreRecord.all
-    @ordinary_response_score_records.each do |item|
-      word_count = words_counted(item.comments)
-      item.update_attribute('word_count', word_count)
-    end
+    #@ordinary_response_score_records.each do |item|
+    #  word_count = words_counted(item.comments)
+    #  item.update_attribute('word_count', word_count)
+    #end
   end
 
   def show

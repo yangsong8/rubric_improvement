@@ -1,6 +1,10 @@
 class CustomResponseScoreRecordsController < ApplicationController
   def index
     @custom_response_score_records = CustomResponseScoreRecord.all
+    @custom_response_score_records.each do |item|
+      word_count = words_counted(item.comments)
+      item.update_attribute('word_count', word_count)
+    end
   end
 
   def show
@@ -14,5 +18,10 @@ class CustomResponseScoreRecordsController < ApplicationController
   end
 
   def delete
+  end
+
+  def words_counted(str)
+    counter = WordsCounted.count(str)
+    return counter.word_count
   end
 end
