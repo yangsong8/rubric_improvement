@@ -40,4 +40,5 @@ build/
 .*~
 .html.erb~
 .env
+log/
 log/*.log
