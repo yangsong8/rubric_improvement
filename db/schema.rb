@@ -11,7 +11,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150531155309) do
+ActiveRecord::Schema.define(version: 20150531171005) do
+
+  create_table "assignments", force: :cascade do |t|
+    t.integer "questionnaire_id",    limit: 4
+    t.string  "name",                limit: 255
+    t.integer "course_id",           limit: 4
+    t.string  "course_name",         limit: 255
+    t.integer "student_num",         limit: 4
+    t.integer "reviewer_num",        limit: 4
+    t.integer "review_num",          limit: 4
+    t.float   "overall_reliability", limit: 24
+  end
 
   create_table "custom_response_score_records", force: :cascade do |t|
     t.integer  "assignment_id",    limit: 4
@@ -21,6 +32,7 @@ ActiveRecord::Schema.define(version: 20150531155309) do
     t.integer  "response_id",      limit: 4
     t.integer  "reviewer_id",      limit: 4
     t.integer  "reviewee_team_id", limit: 4
+    t.integer  "word_count",       limit: 4
     t.datetime "created_at",                     null: false
     t.datetime "updated_at",                     null: false
   end
@@ -33,8 +45,25 @@ ActiveRecord::Schema.define(version: 20150531155309) do
     t.integer  "response_id",      limit: 4
     t.integer  "reviewer_id",      limit: 4
     t.integer  "reviewee_team_id", limit: 4
+    t.integer  "word_count",       limit: 4
     t.datetime "created_at",                     null: false
     t.datetime "updated_at",                     null: false
+  end
+
+  create_table "question_quality", force: :cascade do |t|
+    t.integer "question_id",         limit: 4
+    t.integer "assignment_id",       limit: 4
+    t.float   "overall_reliability", limit: 24
+  end
+
+  create_table "questions", force: :cascade do |t|
+    t.text    "txt",              limit: 65535
+    t.integer "questionnaire_id", limit: 4
+  end
+
+  create_table "reviewee_teams", force: :cascade do |t|
+    t.integer "assignment_id",       limit: 4
+    t.float   "overall_reliability", limit: 24
   end
 
 end

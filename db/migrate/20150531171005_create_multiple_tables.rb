@@ -27,6 +27,5 @@ class CreateMultipleTables < ActiveRecord::Migration
       t.float :overall_reliability
     end
 
-    end
   end
 end
