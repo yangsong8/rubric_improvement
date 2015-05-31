@@ -1,0 +1,2 @@
+module OrdinaryResponseScoreRecordsHelper
+end

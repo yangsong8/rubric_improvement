@@ -1,0 +1,2 @@
+module CustomResponseScoreRecordsHelper
+end

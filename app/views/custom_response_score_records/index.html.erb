@@ -1,0 +1,11 @@
+<h1>CustomResponseScoreRecords#index</h1>
+<p>Find me in app/views/custom_response_score_records/index.html.erb</p>
+<% @custom_response_score_records.each do |item| %>
+<%= item.assignment_id %>
+<%= item.question_id %>
+<%= item.score %>
+<%= item.response_id %>
+<%= item.reviewer_id %>
+<%= item.reviewee_team_id %>
+<br/>
+<% end %>
