@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150531171005) do
+ActiveRecord::Schema.define(version: 20150601015432) do
 
   create_table "assignments", force: :cascade do |t|
     t.integer "questionnaire_id",    limit: 4
@@ -25,40 +25,47 @@ ActiveRecord::Schema.define(version: 20150531171005) do
   end
 
   create_table "custom_response_score_records", force: :cascade do |t|
-    t.integer  "assignment_id",    limit: 4
-    t.integer  "question_id",      limit: 4
-    t.integer  "score",            limit: 4
-    t.text     "comments",         limit: 65535
-    t.integer  "response_id",      limit: 4
-    t.integer  "reviewer_id",      limit: 4
-    t.integer  "reviewee_team_id", limit: 4
-    t.integer  "word_count",       limit: 4
-    t.datetime "created_at",                     null: false
-    t.datetime "updated_at",                     null: false
+    t.integer "assignment_id",    limit: 4
+    t.integer "question_id",      limit: 4
+    t.integer "score",            limit: 4
+    t.text    "comments",         limit: 65535
+    t.integer "response_id",      limit: 4
+    t.integer "reviewer_id",      limit: 4
+    t.integer "reviewee_team_id", limit: 4
+    t.integer "word_count",       limit: 4
   end
 
   create_table "ordinary_response_score_records", force: :cascade do |t|
-    t.integer  "assignment_id",    limit: 4
-    t.integer  "question_id",      limit: 4
-    t.integer  "score",            limit: 4
-    t.text     "comments",         limit: 65535
-    t.integer  "response_id",      limit: 4
-    t.integer  "reviewer_id",      limit: 4
-    t.integer  "reviewee_team_id", limit: 4
-    t.integer  "word_count",       limit: 4
-    t.datetime "created_at",                     null: false
-    t.datetime "updated_at",                     null: false
+    t.integer "assignment_id",    limit: 4
+    t.integer "question_id",      limit: 4
+    t.integer "score",            limit: 4
+    t.text    "comments",         limit: 65535
+    t.integer "response_id",      limit: 4
+    t.integer "reviewer_id",      limit: 4
+    t.integer "reviewee_team_id", limit: 4
+    t.integer "word_count",       limit: 4
   end
 
   create_table "question_quality", force: :cascade do |t|
     t.integer "question_id",         limit: 4
     t.integer "assignment_id",       limit: 4
     t.float   "overall_reliability", limit: 24
+    t.integer "word_count",          limit: 4
+  end
+
+  create_table "questionnaires", force: :cascade do |t|
+    t.string "name", limit: 255
+    t.string "type", limit: 255
   end
 
   create_table "questions", force: :cascade do |t|
     t.text    "txt",              limit: 65535
     t.integer "questionnaire_id", limit: 4
+    t.integer "word_count",       limit: 4
+  end
+
+  create_table "responses", force: :cascade do |t|
+    t.integer "word_count", limit: 4
   end
 
   create_table "reviewee_teams", force: :cascade do |t|

@@ -5,6 +5,11 @@ class CustomResponseScoreRecordsController < ApplicationController
     #  word_count = words_counted(item.comments)
     #  item.update_attribute('word_count', word_count)
     #end
+    @questions = Question.all
+    @questions.each do |q|
+      word_count = words_counted(q.txt)
+      q.update_attribute('word_count', word_count)
+    end
   end
 
   def show
