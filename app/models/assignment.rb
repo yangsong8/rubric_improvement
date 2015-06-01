@@ -6,5 +6,4 @@ class Assignment < ActiveRecord::Base
   validates :student_num, :presence => true
   validates :reviewer_num, :presence => true
   validates :review_num, :presence => true
-  validates :overall_reliability, :presence => true
 end

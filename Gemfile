@@ -28,7 +28,9 @@ gem 'wc', '~> 0.99.0'
 gem 'words_counted', '~> 0.1.5'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
-
+gem 'pry'
+gem 'pry-remote'
+gem 'pry-nav'
 # Use Unicorn as the app server
 # gem 'unicorn'
 

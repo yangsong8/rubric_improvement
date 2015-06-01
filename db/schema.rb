@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150601015432) do
+ActiveRecord::Schema.define(version: 20150601194758) do
 
   create_table "assignments", force: :cascade do |t|
     t.integer "questionnaire_id",    limit: 4
@@ -21,7 +21,7 @@ ActiveRecord::Schema.define(version: 20150601015432) do
     t.integer "student_num",         limit: 4
     t.integer "reviewer_num",        limit: 4
     t.integer "review_num",          limit: 4
-    t.float   "overall_reliability", limit: 24
+    t.decimal "overall_reliability",             precision: 20, scale: 4
   end
 
   create_table "custom_response_score_records", force: :cascade do |t|
@@ -46,11 +46,11 @@ ActiveRecord::Schema.define(version: 20150601015432) do
     t.integer "word_count",       limit: 4
   end
 
-  create_table "question_quality", force: :cascade do |t|
+  create_table "question_qualities", force: :cascade do |t|
     t.integer "question_id",         limit: 4
     t.integer "assignment_id",       limit: 4
-    t.float   "overall_reliability", limit: 24
-    t.integer "word_count",          limit: 4
+    t.decimal "overall_reliability",           precision: 20, scale: 4
+    t.decimal "average_word_count",            precision: 20, scale: 4
   end
 
   create_table "questionnaires", force: :cascade do |t|
@@ -70,7 +70,7 @@ ActiveRecord::Schema.define(version: 20150601015432) do
 
   create_table "reviewee_teams", force: :cascade do |t|
     t.integer "assignment_id",       limit: 4
-    t.float   "overall_reliability", limit: 24
+    t.decimal "overall_reliability",           precision: 20, scale: 4
   end
 
 end
