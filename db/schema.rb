@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150602140923) do
+ActiveRecord::Schema.define(version: 20150602163856) do
 
   create_table "assignments", force: :cascade do |t|
     t.integer "questionnaire_id",    limit: 4
@@ -63,6 +63,9 @@ ActiveRecord::Schema.define(version: 20150602140923) do
     t.text    "txt",              limit: 65535
     t.integer "questionnaire_id", limit: 4
     t.integer "word_count",       limit: 4
+    t.integer "tf",               limit: 4
+    t.integer "single_complete",  limit: 4
+    t.integer "spot_check",       limit: 4
   end
 
   create_table "responses", force: :cascade do |t|
