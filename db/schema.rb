@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150601194758) do
+ActiveRecord::Schema.define(version: 20150602140923) do
 
   create_table "assignments", force: :cascade do |t|
     t.integer "questionnaire_id",    limit: 4
@@ -51,6 +51,7 @@ ActiveRecord::Schema.define(version: 20150601194758) do
     t.integer "assignment_id",       limit: 4
     t.decimal "overall_reliability",           precision: 20, scale: 4
     t.decimal "average_word_count",            precision: 20, scale: 4
+    t.decimal "percentage",                    precision: 20, scale: 4
   end
 
   create_table "questionnaires", force: :cascade do |t|
