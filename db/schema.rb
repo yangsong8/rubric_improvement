@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150602163856) do
+ActiveRecord::Schema.define(version: 20150603000257) do
 
   create_table "assignments", force: :cascade do |t|
     t.integer "questionnaire_id",    limit: 4
@@ -22,6 +22,8 @@ ActiveRecord::Schema.define(version: 20150602163856) do
     t.integer "reviewer_num",        limit: 4
     t.integer "review_num",          limit: 4
     t.decimal "overall_reliability",             precision: 20, scale: 4
+    t.integer "undergraduate",       limit: 4
+    t.integer "programming",         limit: 4
   end
 
   create_table "custom_response_score_records", force: :cascade do |t|
@@ -66,6 +68,17 @@ ActiveRecord::Schema.define(version: 20150602163856) do
     t.integer "tf",               limit: 4
     t.integer "single_complete",  limit: 4
     t.integer "spot_check",       limit: 4
+  end
+
+  create_table "response_score_records", force: :cascade do |t|
+    t.integer "assignment_id",    limit: 4
+    t.integer "question_id",      limit: 4
+    t.integer "score",            limit: 4
+    t.text    "comments",         limit: 65535
+    t.integer "response_id",      limit: 4
+    t.integer "reviewer_id",      limit: 4
+    t.integer "reviewee_team_id", limit: 4
+    t.integer "word_count",       limit: 4
   end
 
   create_table "responses", force: :cascade do |t|

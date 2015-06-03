@@ -7,7 +7,7 @@ class OrdinaryResponseScoreRecordsController < ApplicationController
     #end
     #whole_response_words_counted
     #all_questions_average_words_counted
-    all_questions_comments_not_null_percentage
+    #all_questions_comments_not_null_percentage
   end
 
   def show
