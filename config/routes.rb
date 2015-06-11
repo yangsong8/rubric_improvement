@@ -1,4 +1,14 @@
 Rails.application.routes.draw do
+  get 'response_score_records/index'
+
+  get 'response_score_records/show'
+
+  get 'response_score_records/new'
+
+  get 'response_score_records/edit'
+
+  get 'response_score_records/delete'
+
   get 'ordinary_response_score_records/index'
 
   get 'ordinary_response_score_records/show'
