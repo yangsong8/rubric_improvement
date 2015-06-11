@@ -33,6 +33,8 @@ gem 'pry-remote'
 gem 'pry-nav'
 # Use Unicorn as the app server
 # gem 'unicorn'
+# stat power
+gem 'statsample', '~> 1.4.3'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
