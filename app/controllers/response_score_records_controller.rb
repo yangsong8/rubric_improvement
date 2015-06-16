@@ -47,6 +47,8 @@ class ResponseScoreRecordsController < ApplicationController
       end
       #get unique question ids in one reviewee team id
       question_ids.uniq!
+      #reject question_ids whose score is null
+      question_ids.reject!{|id| ResponseScoreRecord.where(question_id: id).first.score == nil}
       question_ids.each do |question_id|
         specific_records_for_question_id_and_team_id = ResponseScoreRecord.where(reviewee_team_id: distinct_reviewee_team_record.reviewee_team_id, question_id: question_id)
         temp_array = Array.new
