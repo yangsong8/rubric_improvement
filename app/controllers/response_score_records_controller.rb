@@ -4,8 +4,9 @@ class ResponseScoreRecordsController < ApplicationController
     #median_grades_of_each_artifact_and_each_question
     #add_liberal_agreement_and_conservative_agreement_to_question_qualities_by_teams
     #calculate_pearson_and_spearman_value_between_each_response_score_and_median_score_of_questionnaire
-    average_pearson_and_spearman_value
+    #average_pearson_and_spearman_value
     #test
+    add_liberal_agreement_and_conservative_agreement_to_question_qualities
   end
 
   def show
@@ -173,4 +174,25 @@ class ResponseScoreRecordsController < ApplicationController
       QuestionnaireQualitiesByTeam.create(id: iterator, questionnaire_id: questionnaire_id, assignment_id: assignment_id, team_id: team.team_id, rated_times: rated_times, avg_pearson: avg_pearson, avg_spearman: avg_spearman)
     end  
   end
+
+  def add_liberal_agreement_and_conservative_agreement_to_question_qualities
+    assignments = QuestionQuality.select(:assignment_id).distinct
+    assignments.each do |assignment|
+      questions = QuestionQuality.where(assignment_id: assignment.assignment_id)
+      questions.each do |question|
+        question_qualities = QuestionQualitiesByTeam.where(assignment_id: assignment.assignment_id, question_id: question.question_id)
+        liberal_agreement_total_num = 0
+        conservative_agreement_total_num = 0
+        rated_total_times = 0
+        question_qualities.each do |question_quality|
+          liberal_agreement_total_num += question_quality.liberal_agreement_num
+          conservative_agreement_total_num += question_quality.conservative_agreement_num
+          rated_total_times += question_quality.rated_times
+          liberal_agreement_total_percentage = (liberal_agreement_total_num * 1.0 / rated_total_times).round(4)
+          conservative_agreement_total_percentage = (conservative_agreement_total_num * 1.0 / rated_total_times).round(4)
+          question.update_attributes(liberal_agreement_num: liberal_agreement_total_num, conservative_agreement_num: conservative_agreement_total_num, rated_times: rated_total_times, liberal_agreement_percentage: liberal_agreement_total_percentage, conservative_agreement_percentage: conservative_agreement_total_percentage)
+        end
+      end  
+    end  
+  end  
 end
