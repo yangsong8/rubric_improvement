@@ -24,8 +24,14 @@ class ResponseScoreRecordsController < ApplicationController
     y=[2,4,8,6]
     @response_score_record1 = pearson(x,y)
     @response_score_record2 = spearman(x,y)
-    puts x.class
-    puts y.class
+    @response_score_record3 =cronbach_alpha(x,y)
+  end
+
+  def cronbach_alpha(x,y)
+    x1=x.to_vector(:scale)
+    x2=y.to_vector(:scale)
+    ds={'x1'=>x1,'x2'=>x2}.to_dataset
+     Statsample::Reliability.cronbach_alpha(ds)
   end
 
   def pearson(x,y)
