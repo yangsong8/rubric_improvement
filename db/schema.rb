@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150616150216) do
+ActiveRecord::Schema.define(version: 20150616165732) do
 
   create_table "assignments", force: :cascade do |t|
     t.integer "questionnaire_id",    limit: 4
@@ -76,9 +76,28 @@ ActiveRecord::Schema.define(version: 20150616150216) do
     t.float   "conservative_agreement_percentage", limit: 24
   end
 
-  create_table "questionnaire_quality", force: :cascade do |t|
+  create_table "questionnaire_qualities", force: :cascade do |t|
     t.integer "questionnaire_id", limit: 4
     t.integer "assignment_id",    limit: 4
+    t.float   "avg_pearson",      limit: 24
+    t.float   "avg_spearman",     limit: 24
+    t.integer "team_id",          limit: 4
+  end
+
+  create_table "questionnaire_qualities_by_responses", force: :cascade do |t|
+    t.integer "questionnaire_id", limit: 4
+    t.integer "assignment_id",    limit: 4
+    t.integer "team_id",          limit: 4
+    t.integer "response_id",      limit: 4
+    t.float   "pearson",          limit: 24
+    t.float   "spearman",         limit: 24
+  end
+
+  create_table "questionnaire_qualities_by_teams", force: :cascade do |t|
+    t.integer "questionnaire_id", limit: 4
+    t.integer "assignment_id",    limit: 4
+    t.integer "team_id",          limit: 4
+    t.integer "rated_times",      limit: 4
     t.float   "avg_pearson",      limit: 24
     t.float   "avg_spearman",     limit: 24
   end

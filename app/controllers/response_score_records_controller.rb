@@ -2,7 +2,9 @@ class ResponseScoreRecordsController < ApplicationController
   require 'statsample'
   def index
     #median_grades_of_each_artifact_and_each_question
-    add_liberal_agreement_and_conservative_agreement_to_question_qualities_by_teams
+    #add_liberal_agreement_and_conservative_agreement_to_question_qualities_by_teams
+    calculate_pearson_and_spearman_value_between_each_response_score_and_median_score_of_questionnaire
+    #test
   end
 
   def show
@@ -22,6 +24,8 @@ class ResponseScoreRecordsController < ApplicationController
     y=[2,4,8,6]
     @response_score_record1 = pearson(x,y)
     @response_score_record2 = spearman(x,y)
+    puts x.class
+    puts y.class
   end
 
   def pearson(x,y)
@@ -101,6 +105,40 @@ class ResponseScoreRecordsController < ApplicationController
       print median
       puts '========================================='
       QuestionQualitiesByTeam.create(id: iterator, assignment_id: assignment_id, question_id: question_id, team_id: team_id, liberal_agreement_num: liberal_agreement_num, conservative_agreement_num: conservative_agreement_num, rated_times: rated_times, liberal_agreement_percentage: liberal_agreement_percentage, conservative_agreement_percentage: conservative_agreement_percentage)
+    end
+  end
+
+  def calculate_pearson_and_spearman_value_between_each_response_score_and_median_score_of_questionnaire
+    iterator = 0
+    teams = MedianGrade.select(:team_id).distinct.first(1)
+    teams.each do |team|
+      median_grades = MedianGrade.where(team_id: team.team_id).order(:question_id)
+      median_vector = Array.new
+      #median_score_of_questionnaire
+      median_grades.each do |median_grade|
+        median_vector << median_grade.median.to_i
+      end
+      responses = ResponseScoreRecord.where(reviewee_team_id: team.team_id).select(:response_id).distinct
+      responses.each do |response|
+        response_id = response.response_id
+        response_score_records = ResponseScoreRecord.where(reviewee_team_id: team.team_id, response_id: response_id).order(:question_id)
+        current_response_vector = Array.new
+        response_score_records.each do |response_score_record|
+          next if response_score_record.score == nil
+          current_response_vector << response_score_record.score.to_i
+        end
+        puts '+++++++++++++++++++++++++++++++++++++++'
+        puts current_response_vector.size
+        puts median_vector.size
+        binding.pry
+        pearson = pearson(median_vector, current_response_vector)
+        spearman = spearman(median_vector, current_response_vector)
+        iterator += 1
+        question_id = median_grades.first.question_id
+        questionnaire_id = Question.find(question_id).questionnaire_id
+        assignment_id = RevieweeTeam.find(team.team_id).assignment_id
+        QuestionnaireQualitiesByResponse.create(id: iterator, questionnaire_id: questionnaire_id, assignment_id: assignment_id, team_id: team.team_id, response_id: response_id, pearson: pearson, spearman: spearman)
+      end  
     end
   end
 end
