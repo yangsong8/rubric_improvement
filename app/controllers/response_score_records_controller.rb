@@ -110,7 +110,7 @@ class ResponseScoreRecordsController < ApplicationController
 
   def calculate_pearson_and_spearman_value_between_each_response_score_and_median_score_of_questionnaire
     iterator = 0
-    teams = MedianGrade.select(:team_id).distinct.first(1)
+    teams = MedianGrade.select(:team_id).distinct
     teams.each do |team|
       median_grades = MedianGrade.where(team_id: team.team_id).order(:question_id)
       median_vector = Array.new
@@ -118,6 +118,7 @@ class ResponseScoreRecordsController < ApplicationController
       median_grades.each do |median_grade|
         median_vector << median_grade.median.to_i
       end
+      next if median_vector.uniq.size == 1
       responses = ResponseScoreRecord.where(reviewee_team_id: team.team_id).select(:response_id).distinct
       responses.each do |response|
         response_id = response.response_id
@@ -130,10 +131,13 @@ class ResponseScoreRecordsController < ApplicationController
         puts '+++++++++++++++++++++++++++++++++++++++'
         puts current_response_vector.size
         puts median_vector.size
-        binding.pry
+        #median_vector[0] += 0.0001 if median_vector.uniq.size == 1
+        #current_response_vector[0] += 0.001 if current_response_vector == 1
+        next if current_response_vector.uniq.size == 1
+        iterator += 1
         pearson = pearson(median_vector, current_response_vector)
         spearman = spearman(median_vector, current_response_vector)
-        iterator += 1
+        
         question_id = median_grades.first.question_id
         questionnaire_id = Question.find(question_id).questionnaire_id
         assignment_id = RevieweeTeam.find(team.team_id).assignment_id
