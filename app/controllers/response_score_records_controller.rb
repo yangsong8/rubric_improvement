@@ -3,7 +3,8 @@ class ResponseScoreRecordsController < ApplicationController
   def index
     #median_grades_of_each_artifact_and_each_question
     #add_liberal_agreement_and_conservative_agreement_to_question_qualities_by_teams
-    calculate_pearson_and_spearman_value_between_each_response_score_and_median_score_of_questionnaire
+    #calculate_pearson_and_spearman_value_between_each_response_score_and_median_score_of_questionnaire
+    average_pearson_and_spearman_value
     #test
   end
 
@@ -150,5 +151,26 @@ class ResponseScoreRecordsController < ApplicationController
         QuestionnaireQualitiesByResponse.create(id: iterator, questionnaire_id: questionnaire_id, assignment_id: assignment_id, team_id: team.team_id, response_id: response_id, pearson: pearson, spearman: spearman)
       end  
     end
+  end
+
+  def average_pearson_and_spearman_value
+    iterator = 0
+    teams = QuestionnaireQualitiesByResponse.select(:team_id).distinct
+    teams.each do |team|
+      response_score_records = QuestionnaireQualitiesByResponse.where(team_id: team.team_id)
+      rated_times = response_score_records.count
+      pearson_sum = 0
+      spearman_sum = 0
+      response_score_records.each do |response_score_record|
+        pearson_sum += response_score_record.pearson
+        spearman_sum += response_score_record.spearman
+      end
+      avg_pearson = (pearson_sum * 1.0 / rated_times).round(4)
+      avg_spearman = (spearman_sum * 1.0 / rated_times).round(4)
+      iterator += 1
+      questionnaire_id = response_score_records.first.questionnaire_id
+      assignment_id = response_score_records.first.assignment_id
+      QuestionnaireQualitiesByTeam.create(id: iterator, questionnaire_id: questionnaire_id, assignment_id: assignment_id, team_id: team.team_id, rated_times: rated_times, avg_pearson: avg_pearson, avg_spearman: avg_spearman)
+    end  
   end
 end
