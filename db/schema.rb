@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150611191503) do
+ActiveRecord::Schema.define(version: 20150615222111) do
 
   create_table "assignments", force: :cascade do |t|
     t.integer "questionnaire_id",    limit: 4
@@ -35,6 +35,12 @@ ActiveRecord::Schema.define(version: 20150611191503) do
     t.integer "reviewer_id",      limit: 4
     t.integer "reviewee_team_id", limit: 4
     t.integer "word_count",       limit: 4
+  end
+
+  create_table "median_grades", force: :cascade do |t|
+    t.integer "team_id",     limit: 4
+    t.integer "question_id", limit: 4
+    t.float   "median",      limit: 24
   end
 
   create_table "ordinary_response_score_records", force: :cascade do |t|
