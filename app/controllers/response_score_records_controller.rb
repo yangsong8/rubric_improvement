@@ -51,7 +51,7 @@ class ResponseScoreRecordsController < ApplicationController
         specific_records_for_question_id_and_team_id = ResponseScoreRecord.where(reviewee_team_id: distinct_reviewee_team_record.reviewee_team_id, question_id: question_id)
         temp_array = Array.new
         specific_records_for_question_id_and_team_id.each do |specific_record|
-          temp_array << specific_record.score
+          temp_array << specific_record.score.to_i
         end
         median = median(temp_array)
         iterator += 1
@@ -62,6 +62,8 @@ class ResponseScoreRecordsController < ApplicationController
   end
 
   def median(array)
+    print array
+    puts '========================================='
     return -1 if array.uniq[0]==nil
     sorted = array.sort
     len = sorted.length
