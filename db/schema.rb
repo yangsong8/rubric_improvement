@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150615222111) do
+ActiveRecord::Schema.define(version: 20150616150216) do
 
   create_table "assignments", force: :cascade do |t|
     t.integer "questionnaire_id",    limit: 4
@@ -55,11 +55,25 @@ ActiveRecord::Schema.define(version: 20150615222111) do
   end
 
   create_table "question_qualities", force: :cascade do |t|
-    t.integer "question_id",         limit: 4
-    t.integer "assignment_id",       limit: 4
-    t.decimal "overall_reliability",           precision: 20, scale: 4
-    t.decimal "average_word_count",            precision: 20, scale: 4
-    t.decimal "percentage",                    precision: 20, scale: 4
+    t.integer "question_id",                       limit: 4
+    t.integer "assignment_id",                     limit: 4
+    t.decimal "average_word_count",                           precision: 20, scale: 4
+    t.integer "liberal_agreement_num",             limit: 4
+    t.integer "conservative_agreement_num",        limit: 4
+    t.integer "rated_times",                       limit: 4
+    t.float   "liberal_agreement_percentage",      limit: 24
+    t.float   "conservative_agreement_percentage", limit: 24
+  end
+
+  create_table "question_qualities_by_teams", force: :cascade do |t|
+    t.integer "assignment_id",                     limit: 4
+    t.integer "question_id",                       limit: 4
+    t.integer "team_id",                           limit: 4
+    t.integer "liberal_agreement_num",             limit: 4
+    t.integer "conservative_agreement_num",        limit: 4
+    t.integer "rated_times",                       limit: 4
+    t.float   "liberal_agreement_percentage",      limit: 24
+    t.float   "conservative_agreement_percentage", limit: 24
   end
 
   create_table "questionnaire_quality", force: :cascade do |t|

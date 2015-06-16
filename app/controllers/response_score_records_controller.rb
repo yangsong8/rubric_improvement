@@ -1,7 +1,8 @@
 class ResponseScoreRecordsController < ApplicationController
   require 'statsample'
   def index
-    median_grades_of_each_artifact_and_each_question
+    #median_grades_of_each_artifact_and_each_question
+    add_liberal_agreement_and_conservative_agreement_to_question_qualities_by_teams
   end
 
   def show
@@ -70,5 +71,36 @@ class ResponseScoreRecordsController < ApplicationController
     sorted = array.sort
     len = sorted.length
     return (sorted[(len - 1) / 2] + sorted[len / 2]) / 2.0
+  end
+
+  def add_liberal_agreement_and_conservative_agreement_to_question_qualities_by_teams
+    iterator = 0 
+    median_grades = MedianGrade.all
+    median_grades.each do |median_grade|
+      response_score_records = ResponseScoreRecord.where(reviewee_team_id: median_grade.team_id, question_id: median_grade.question_id)
+      temp_array = Array.new
+      response_score_records.each do |response_score_record|
+          temp_array << response_score_record.score.to_i
+      end
+      median = median_grade.median.round
+      liberal_agreement_num = 0
+      conservative_agreement_num = 0
+      temp_array.each do |item|
+        liberal_agreement_num +=1 if item >= median-1 and item <= median+1
+        conservative_agreement_num +=1 if item == median
+      end 
+      iterator += 1
+      question_id = median_grade.question_id
+      team_id = median_grade.team_id
+      assignment_id = RevieweeTeam.find(team_id).assignment_id
+      rated_times = temp_array.size
+      liberal_agreement_percentage = (liberal_agreement_num * 1.0 / rated_times).round(4)
+      conservative_agreement_percentage = (conservative_agreement_num * 1.0 / rated_times).round(4)
+      #print
+      print temp_array
+      print median
+      puts '========================================='
+      QuestionQualitiesByTeam.create(id: iterator, assignment_id: assignment_id, question_id: question_id, team_id: team_id, liberal_agreement_num: liberal_agreement_num, conservative_agreement_num: conservative_agreement_num, rated_times: rated_times, liberal_agreement_percentage: liberal_agreement_percentage, conservative_agreement_percentage: conservative_agreement_percentage)
+    end
   end
 end
