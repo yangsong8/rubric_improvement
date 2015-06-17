@@ -6,7 +6,8 @@ class ResponseScoreRecordsController < ApplicationController
     #calculate_pearson_and_spearman_value_between_each_response_score_and_median_score_of_questionnaire
     #average_pearson_and_spearman_value
     #test
-    add_liberal_agreement_and_conservative_agreement_to_question_qualities
+    #add_liberal_agreement_and_conservative_agreement_to_question_qualities
+    calculate_avg_pearson_and_avg_spearman_value_to_questionnaire_qualities
   end
 
   def show
@@ -195,4 +196,25 @@ class ResponseScoreRecordsController < ApplicationController
       end  
     end  
   end  
+
+  def calculate_avg_pearson_and_avg_spearman_value_to_questionnaire_qualities
+    iterator = 0
+    question_qualities = QuestionnaireQualitiesByTeam.select(:assignment_id).distinct
+    question_qualities.each do |question_quality|
+      records = QuestionnaireQualitiesByTeam.where(assignment_id: question_quality.assignment_id)
+      rated_total_times = 0
+      total_pearson = 0
+      total_spearman = 0
+      questionnaire_id = records.first.questionnaire_id
+      assignment_id = records.first.assignment_id
+      records.each do |record|
+        rated_total_times += record.rated_times
+        total_pearson += record.rated_times * record.avg_pearson
+        total_spearman += record.rated_times * record.avg_spearman
+      end
+      total_avg_pearson = total_pearson / rated_total_times
+      total_avg_spearman = total_spearman / rated_total_times
+      QuestionnaireQuality.create(id: iterator, questionnaire_id: questionnaire_id, assignment_id: assignment_id, avg_pearson: total_avg_pearson, avg_spearman: total_avg_spearman)
+    end
+  end
 end
